@@ -1,0 +1,260 @@
+= Intershop CI Setup Plugin
+:latestRevision: 1.0.0
+:toc:
+
+== Summary
+This plugin provides tasks for the configuration of necessary sources for the setup of the CI process
+as proposed by Intershop. Based on a configuration the source projects are created from templates provided by this plugin.
+It is possible to use the template project as a starting point for the setup of the CI process, as described in
+the Intershop documentation (see https://support.intershop.com/kb/index.php/Display/X27327[Cookbook - Setup CI Infrastructure]).
+
+== Usage
+To use the Gradle Intershop CI plugin, include the following in the build script:
+
+[source,groovy,subs="attributes"]
+----
+plugins {
+    id 'com.intershop.gradle.cisetup' version '{latestRevision}'
+}
+
+IntershopCISetup {
+    /**
+     *  Configures directories that sources are generated into.
+     **/
+    directories {
+
+        /**
+         * Base directory for all generated sources.
+         **/
+            //TODO: Provide an absolute path, e.g. '/home/developer/intershop-ci/source' on Linux resp.'C:/developer/intershop-ci' on Windows
+        setupDirectory = ''
+
+        /**
+         *  ... contains
+         *        - corporate distribution
+         *        - deployment example project
+         **/
+        devOpsDir = "\${setupDirectory}/devops"
+
+        /**
+         *  ... contains all projects
+         *        - oracle driver project
+         *        - project directories
+         **/
+        projectsDir = "\${setupDirectory}/projects"
+    }
+
+     /**
+     *  Repository Settings
+     *  For build and deployment a remote repository is necessary.
+     *  This configuration is used by a special corporate distribution.
+     *  The configuration parameters are also used in the configuration of the
+     *  wrapper in all projects.
+     **/
+    repository {
+        /**
+         * Technical enterprise or corporate name.
+         * This is used for group/organization of generated artifacts in
+         * the artifact repository.
+         */
+        //TODO: Provide a reverse domain name, e.g. 'com.corporate'
+        corporateName = ''
+
+        /**
+         * Base URL for all repositories on the repository server.
+         */
+         //TODO: Provide URL (e.g. http://nexus:8081/nexus/content/repositories)
+        repoBaseURL = ''
+
+        /**
+         *  A list of alternative host names. Can be used when having multiple
+         *  repository servers proxying each other.
+         */
+        //repoHosts = ['nexus', 'nexus.corporate.com']
+
+        /**
+         * Repository path of distributions (see corporate distribution).
+         */
+        repoDistributionsPath = 'repositories/distributions'
+
+        /**
+         * Repository path of all own project releases.
+         */
+        repoReleasesPath = 'repositories/releases'
+
+        /**
+         * Repository path of snapshots.
+         */
+        repoSnapshotsPath = 'repositories/snapshots'
+
+        /**
+         * Group path of all repositories with component releases
+         */
+        groupReleasePath = 'groups/components'
+
+        /**
+         * Gradle version to base corporate distribution on.
+         * Must be compatible with Gradle tools version defined in versions block.
+         */
+        gradleBaseVersion = '2.11'
+
+        **
+        * Initial version of the corporate distribution.
+        */
+        distributionVersion = '2.0.0'
+
+        **
+        * If the distribution stored on an alternative path (separate web server)
+        * It is necessary to specify the whole URL. Otherwise the URL will be
+        * generated from the previous configuration.
+        *
+        * Defaults to
+        * \${repoBaseURL}/\${repoDistributionsPath}/gradle-dist/corporate_gradle_\${gradleBaseVersion}/\${distributionVersion}/corporate_gradle_\${gradleBaseVersion}-\${distributionVersion}-bin.zip
+        */
+        //distributionURL=''
+    }
+
+    /**
+     *  Version settings
+     *  For build and deployment of projects it is necessary to configure the information about the used Intershop versions.
+     **/
+    versions {
+        /**
+         *  Version of the used Gradle based build and deployment tools.
+         *  Defaults to 2.11.0.
+         */
+        intershopGradleToolsVersion = '2.11.0'
+
+        /**
+         * Version of the deployment bootstrap plugin
+         * Defaults to 2.11.0
+         */
+        intershopDeploymentBootstrapVersion = '2.11.0'
+
+        /**
+         * Oracle client version.
+         */
+        //TODO: Specify the version of used Oracle driver
+        oracleClientVersion = '12.1.0.2.0'
+    }
+
+    intershopProject {
+        /**
+         * Technical name of the project. This is also used for the name of the multi project,
+         * that contains all components (cartridges) and the assembly build.
+         **/
+        //TODO: Provide a name using only letters, numbers and underscores (no spaces or other special characters), e.g. 'corporateshop'
+        projectName = ''
+    }
+
+    /**
+     *  CI server configurationen settings
+     **/
+    ciServer {
+        // Hostname of the ci server or ci server agent which runs the assembly integration test
+        hostName = 'ciserver'
+    }
+}
+----
+
+== Tasks
+The CI setup plugin adds different template tasks to the project.
+
+[cols="25%,30%,45%", width="95%, options="header"]
+|===
+|Task name  |Type             |Description
+|intershopCISetupAll          |                       | Create all necessary source artefacts for the CI setup
+|createCorporateDistribution  |CorporateDistribution  | Creates a structure of a corporate distribution package project.
+|createOracleComponentSet     |OracleComponentSet     | Creates a special component set for publishing Oracle JDBC drivers
+|createProject                |IntershopProject       | Creates a structure of a project configuration.
+|createDeploymentConfig       |IntershopDeployment    | Creates a structure of a deployment configuration.
+|===
+
+== Project Extension 'IntershopCISetup'
+This plugin adds an extension *`IntershopCISetup`* to the project.
+
+Type: CISetupExtension
+
+==== Configuration *`directories`*
+This configuration contains all output directories.
+
+[cols="17%,17%,15%,51%", width="90%, options="header"]
+|===
+|Property       | Type   | Default value | Description
+|setupDirectory | String |  | Base directory for all generated sources.
+|devOpsDir      | String | ${setupDirectory}/devops | ... contains +
+- corporate distribution +
+- deployment example project
+|projectsDir    | String | ${setupDirectory}/projects | ... contains all projects +
+- oracle driver project +
+- empty project directories
+|===
+
+==== Configuration *`repository`*
+This extensions is the necessary repository configuration for the Intershop project setup.
+
+[cols="17%,17%,15%,51%", width="90%, options="header"]
+|===
+|Property | Type | Default value | Description
+|corporateName | String |  | Technical enterprise or corporate name. + 
+This is used for group/organization of generated artifacts in the artifact repository.
+|repoBaseURL | String |  | Base URL for all repositories on the repository server. +
+e.g. http://nexus:8081/nexus/content
+|repoHosts  | List<String> |  | A list of alternative host names. Can be used when having multiple repository servers proxying each other. +
+*optional*
+
+| repoDistributionsPath | String | repositories/distributions | Repository path of distributions (see corporate distribution).
+| repoReleasesPath | String | repositories/releases | Repository path of releases.
+| repoSnapshotsPath | String | repositories/snapshots | Repository path of snapshots.
+| groupReleasePath | String | groups/components | Group path of all repositories with component releases
+| gradleBaseVersion| String |2.11|Gradle version to base corporate distribution on.+
+Must be compatible with Gradle tools version defined in versions block.
+| distributionVersion | String |2.0.0|Initial version of the corporate distribution.
+| distributionURL | String | <Generated URL> | If the distribution stored on an alternative path (separate web server) +
+It is necessary to specify the whole URL. Otherwise the URL will be generated from the previous configuration. +
+`${repoBaseURL}/${repoDistributionsPath}/gradle-dist/corporate_gradle_${gradleBaseVersion}/ +
+${distributionVersion}/corporate_gradle_${gradleBaseVersion}-${distributionVersion}-bin.zip` +
+*optional*
+|===
+
+==== Configuration *`versions`*
+All versions that are used in this configuration.
+
+[cols="17%,17%,15%,51%", width="90%, options="header"]
+|===
+|Property | Type | Default value | Description
+|intershopGradleToolsVersion | String | | Version of the used Gradle based build and deployment tools.
+|intershopDeploymentBootstrapVersion | String | | Version of the deployment bootstrap plugin
+|oracleClientVersion  | String | | Oracle client version.
+|===
+It is necessary to specify correct version numbers without wildcards. The version settings are verified by the plugin.
+Furthermore it is necessary to specify the Oracle client version in the assembly build. +
+Add to the `gradle.properties` of the assembly project: `version.com.intershop.3rd_oracle = <version>`
+
+==== Configuration *`intershopProject`*
+The project directory structure can be configured in this part of the configuration.
+
+[cols="17%,17%,15%,51%", width="90%, options="header"]
+|===
+|Property | Type | Default value | Description
+| projectName     | String | |  Technical name of the project.
+|===
+
+==== Configuration *`ciServer`*
+This configuration contains information of the ci server.
+
+[cols="17%,17%,15%,51%", width="90%, options="header"]
+|===
+|Property | Type | Default value | Description
+| hostName | String | ciserver | Hostname of the ci server or ci server agent which runs the assembly integration test
+|===
+
+== License
+
+Copyright 2014-2016 Intershop Communications.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
