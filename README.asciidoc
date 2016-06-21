@@ -175,7 +175,7 @@ This plugin adds an extension *`IntershopCISetup`* to the project.
 
 Type: CISetupExtension
 
-==== Configuration *`directories`*
+=== Configuration *`directories`*
 This configuration contains all output directories.
 
 [cols="17%,17%,15%,51%", width="90%, options="header"]
@@ -190,7 +190,7 @@ This configuration contains all output directories.
 - empty project directories
 |===
 
-==== Configuration *`repository`*
+=== Configuration *`repository`*
 This extensions is the necessary repository configuration for the Intershop project setup.
 
 [cols="17%,17%,15%,51%", width="90%, options="header"]
@@ -217,7 +217,7 @@ ${distributionVersion}/corporate_gradle_${gradleBaseVersion}-${distributionVersi
 *optional*
 |===
 
-==== Configuration *`versions`*
+=== Configuration *`versions`*
 All versions that are used in this configuration.
 
 [cols="17%,17%,15%,51%", width="90%, options="header"]
@@ -231,7 +231,7 @@ It is necessary to specify correct version numbers without wildcards. The versio
 Furthermore it is necessary to specify the Oracle client version in the assembly build. +
 Add to the `gradle.properties` of the assembly project: `version.com.intershop.3rd_oracle = <version>`
 
-==== Configuration *`intershopProject`*
+=== Configuration *`intershopProject`*
 The project directory structure can be configured in this part of the configuration.
 
 [cols="17%,17%,15%,51%", width="90%, options="header"]
@@ -240,7 +240,7 @@ The project directory structure can be configured in this part of the configurat
 | projectName     | String | |  Technical name of the project.
 |===
 
-==== Configuration *`ciServer`*
+=== Configuration *`ciServer`*
 This configuration contains information of the ci server.
 
 [cols="17%,17%,15%,51%", width="90%, options="header"]
