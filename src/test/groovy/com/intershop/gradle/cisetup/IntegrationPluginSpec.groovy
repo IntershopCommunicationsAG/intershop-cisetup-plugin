@@ -234,9 +234,9 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         contentIntershopInitGradle.contains('repoHostList = [\'nexus\',\'nexus.corporate.com\']')
         contentIntershopInitGradle.contains('corporateName = \'test-corporatename\'')
 
-        new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/p_oracle/init.gradle').exists()
-        new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/p_oracle/gradle').exists()
-        new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/p_oracle/build/oracleLibs/jars').exists()
+        new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/init.gradle').exists()
+        new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/gradle').exists()
+        new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/build/oracleLibs/jars').exists()
         new File(testProjectDir, 'intershop-ci-setup/projects/test-project/gradle').exists()
     }
 
@@ -381,7 +381,7 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         ivyFile.text.contains('type="bin" ext="zip" conf="runtime"')
     }
 
-    def "Run oracle component set task"() {
+    def "Run oracle component task"() {
         given:
         String[] taskList = [':createOracleComponentSet']
 
@@ -419,9 +419,9 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         ! new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution').exists()
         ! new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-plugins/corporate-configuration').exists()
 
-        new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/p_oracle/init.gradle').exists()
-        new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/p_oracle/gradle').exists()
-        new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/p_oracle/build/oracleLibs/jars').exists()
+        new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/init.gradle').exists()
+        new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/gradle').exists()
+        new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/build/oracleLibs/jars').exists()
         ! new File(testProjectDir, 'intershop-ci-setup/projects/test-project').exists()
     }
 
