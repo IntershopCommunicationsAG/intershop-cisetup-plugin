@@ -37,7 +37,7 @@ class OracleCartridge extends AbstractTemplate {
 
 	static void createBase(String path, Properties props) {
 		ProjectTemplate.fromRoot(path) {
-			'p_oracle' {
+			'3rd_oracle' {
 				'gradle' {
 					'wrapper' {
 						'gradle-wrapper.jar' resourcePath: '/resources/gradle-wrapper.jar'
