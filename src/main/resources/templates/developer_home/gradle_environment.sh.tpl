@@ -30,40 +30,25 @@ fi
 DEVELOPER_BASE=`dirname "\$realpath"`
 # ---------------------------------------------
 
-GRADLE_USER_HOME=\${DEVELOPER_BASE}/../gradle_user_home
-
-COMPONENTSET=\${DEVELOPER_BASE}
-ASSEMBLY=\${COMPONENTSET}/assembly
 SERVER=\${DEVELOPER_BASE}/build/server
-JAVADOC=\${DEVELOPER_BASE}//build/javadoc
-WORKSPACE=\${DEVELOPER_BASE}/build/workspace
-REPO=\${DEVELOPER_BASE}/build/repo
+WORKSPACE=\${HOME}/${ProjectName}/workspace
 
 # Set Gradle project properties for all directories that Gradle needs to know
 ORG_GRADLE_PROJECT_serverDirectory=\${SERVER}
-ORG_GRADLE_PROJECT_sourceDirectories=\${COMPONENTSET}
-ORG_GRADLE_PROJECT_buildEnvironmentPropertiesSample=\${ASSEMBLY}/environment.properties.sample
-LOCAL_REPO_PATH=\${REPO}
+ORG_GRADLE_PROJECT_sourceDirectories=\${DEVELOPER_BASE}
+ORG_GRADLE_PROJECT_buildEnvironmentPropertiesSample=\${HOME}/${ProjectName}/environment.properties.sample
 
-export GRADLE_USER_HOME DEVELOPER_BASE COMPONENTSET ASSEMBLY SERVER JAVADOC WORKSPACE REPO ORG_GRADLE_PROJECT_serverDirectory ORG_GRADLE_PROJECT_sourceDirectories ORG_GRADLE_PROJECT_buildEnvironmentPropertiesSample LOCAL_REPO_PATH
+export DEVELOPER_BASE SERVER WORKSPACE REPO ORG_GRADLE_PROJECT_serverDirectory ORG_GRADLE_PROJECT_sourceDirectories ORG_GRADLE_PROJECT_buildEnvironmentPropertiesSample
 
 # set aliases 
-alias cdRepo="cd \$REPO"
-alias cdSet="cd \$COMPONENTSET"
-alias cdAssembly="cd \$ASSEMBLY"
 alias cdServer="cd \$SERVER"
-alias cdDoc="cd \$JAVADOC"
 alias openStudio="/opt/intershop/IntershopStudio/IntershopStudio"
 
 echo " "
 echo "Gradle environment is set up."
 echo "The following aliases are available"
 echo "-------------------------------------------------------"
-echo "cdRepo     - change directory to local repository"
-echo "cdSet      - change directory to project component set"
-echo "cdAssembly - change directory to project assembly"
 echo "cdServer   - change directory to server directory"
-echo "cdDoc      - change directory to java doc directory"
 echo "-------------------------------------------------------"
 echo "openStudio - open Intershop Studio"
 echo "-------------------------------------------------------"
