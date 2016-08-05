@@ -60,6 +60,8 @@ class IntershopProject extends AbstractTemplate {
 			projectDir.mkdirs()
 		}
 
+		props['ProjectName'] = getProjectName()
+
 		createDeveloperBase(projectDir.getAbsolutePath(), props)
         createGradleBase(projectDir.getAbsolutePath(), props)
 	}
