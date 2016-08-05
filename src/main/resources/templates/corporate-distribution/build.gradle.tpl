@@ -13,7 +13,7 @@ final REPO_DISTRIBUTION_PATH = '$RepoDistributionsID'
 apply plugin: 'base'
 apply plugin: 'ivy-publish'
 
-String repoUser = System.getProperty('repoUser') ?: System.getenv('REPO_USER')
+String repoUser = System.getProperty('repoUserName') ?: System.getenv('REPO_USER_NAME')
 String repoUserPasswd = System.getProperty('repoUserPasswd') ?: System.getenv('REPO_USER_PASSWD')
 
 task downloadGradle(type: DownloadGradle) {

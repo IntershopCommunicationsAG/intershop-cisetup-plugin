@@ -11,7 +11,7 @@
 initscript {
 
   // only used for secured repositories
-  String repoUser = System.getProperty('repoUser') ?: System.getenv('REPO_USER')
+  String repoUser = System.getProperty('repoUserName') ?: System.getenv('REPO_USER_NAME')
   String repoUserPasswd = System.getProperty('repoUserPasswd') ?: System.getenv('REPO_USER_PASSWD')
 
   repositories {
