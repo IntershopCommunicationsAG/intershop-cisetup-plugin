@@ -410,6 +410,8 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
             taskListExecuted.add(it.path)
         }
 
+        File publishbat = new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/publish.bat')
+
         then:
         taskListExecuted.containsAll(taskList)
 
@@ -423,6 +425,9 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/gradle').exists()
         new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/build/oracleLibs/jars').exists()
         ! new File(testProjectDir, 'intershop-ci-setup/projects/test-project').exists()
+
+        publishbat.exists()
+        ! publishbat.getText().contains('null')
     }
 
 }

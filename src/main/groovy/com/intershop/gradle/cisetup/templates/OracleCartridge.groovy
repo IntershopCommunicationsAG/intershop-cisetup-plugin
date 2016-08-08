@@ -49,7 +49,7 @@ class OracleCartridge extends AbstractTemplate {
 				'publish.sh' resourcePath: '/resources/oracle/publish.sh', permissions: 'rwxr-xr-x'
 
 				'gradlew.bat' resourcePath: '/resources/gradlew.bat'
-				'publish.bat' resourcePath: '/resources/oracle/gradlew.bat'
+				'publish.bat' resourcePath: '/resources/oracle/publish.bat'
 
 				'init.gradle' resourcePath: '/resources/oracle/init.gradle'
 				'settings.gradle' resourcePath: '/resources/oracle/settings.gradle'
