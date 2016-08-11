@@ -19,7 +19,7 @@ if "%OTN_USER%" == "" goto failureOTN
 if "%OTN_PASSWD%" == "" goto failureOTN
 
 :execute
-%DIRNAME%\gradlew -I init.gradle publish -s
+%DIRNAME%\gradlew publish -s
 set /A PUBERRORLEVEL=%ERRORLEVEL%
 goto exit
 

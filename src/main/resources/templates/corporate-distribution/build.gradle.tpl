@@ -13,8 +13,8 @@ final REPO_DISTRIBUTION_PATH = '$RepoDistributionsID'
 apply plugin: 'base'
 apply plugin: 'ivy-publish'
 
-String repoUser = System.getProperty('repoUserName') ?: System.getenv('REPO_USER_NAME')
-String repoUserPasswd = System.getProperty('repoUserPasswd') ?: System.getenv('REPO_USER_PASSWD')
+String repoUser = project.hasProperty('repoUserName') ? project.getPropeerty('repoUserName') : System.getProperty('REPO_USER_NAME') ?: System.getenv('REPO_USER_NAME')
+String repoUserPasswd = project.hasProperty('repoUserPasswd') ? project.getPropeerty('repoUserPasswd') : System.getProperty('REPO_USER_PASSWD') ?: System.getenv('REPO_USER_PASSWD')
 
 task downloadGradle(type: DownloadGradle) {
 	gradleVersion '$GradleVersion'

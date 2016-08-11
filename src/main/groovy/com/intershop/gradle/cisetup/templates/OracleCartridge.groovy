@@ -51,7 +51,6 @@ class OracleCartridge extends AbstractTemplate {
 				'gradlew.bat' resourcePath: '/resources/gradlew.bat'
 				'publish.bat' resourcePath: '/resources/oracle/publish.bat'
 
-				'init.gradle' resourcePath: '/resources/oracle/init.gradle'
 				'settings.gradle' resourcePath: '/resources/oracle/settings.gradle'
 
 				'build.gradle' 		template: '/templates/oracle/build.gradle.tpl',

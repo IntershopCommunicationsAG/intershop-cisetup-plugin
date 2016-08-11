@@ -234,7 +234,6 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         contentIntershopInitGradle.contains('repoHostList = [\'nexus\',\'nexus.corporate.com\']')
         contentIntershopInitGradle.contains('corporateName = \'test-corporatename\'')
 
-        new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/init.gradle').exists()
         new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/gradle').exists()
         new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/build/oracleLibs/jars').exists()
         new File(testProjectDir, 'intershop-ci-setup/projects/test-project/gradle').exists()
@@ -421,7 +420,6 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         ! new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution').exists()
         ! new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-plugins/corporate-configuration').exists()
 
-        new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/init.gradle').exists()
         new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/gradle').exists()
         new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/build/oracleLibs/jars').exists()
         ! new File(testProjectDir, 'intershop-ci-setup/projects/test-project').exists()

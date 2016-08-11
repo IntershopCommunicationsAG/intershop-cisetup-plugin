@@ -46,9 +46,10 @@ version = ivyPublishVersion
 def authorization = "\${System.getenv('OTN_USER')}:\${System.getenv('OTN_PASSWD')}".getBytes().encodeBase64().toString()
 def libsDestination = '\${project.buildDir}/oracleLibs/jars'
 
-String repoUser = System.getProperty('repoUserName') ?: System.getenv('REPO_USER_NAME')
-String repoUserPasswd = System.getProperty('repoUserPasswd') ?: System.getenv('REPO_USER_PASSWD')
-String releaseRepo = System.getProperty('releaseRepo') ?: System.getenv('RELEASEREPO')
+String repoUser = project.hasProperty('repoUserName') ? project.getProperty('repoUserName') : System.getProperty('REPO_USER_NAME') ?: System.getenv('REPO_USER_NAME')
+String repoUserPasswd = project.hasProperty('repoUserPasswd') ? project.getProperty('repoUserPasswd') : System.getProperty('REPO_USER_PASSWD') ?: System.getenv('REPO_USER_PASSWD')
+String releaseRepo = project.hasProperty('releaseURL') ? project.getProperty('releaseURL') : System.getProperty('RELEASEURL') ?: System.getenv('RELEASEURL')
+
 if (!releaseRepo) releaseRepo = '${RepoBaseURL}/${RepoReleasesID}'
 
 afterEvaluate {
@@ -143,9 +144,9 @@ publishing {
             ivy {
                 url releaseRepo
                 
-                if (repoUser && repoUserPasswd) {
+                if (repoUserName && repoUserPasswd) {
                     credentials {
-                        username repoUser
+                        username repoUserName
                         password repoUserPasswd
                     }
                 }

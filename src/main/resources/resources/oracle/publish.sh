@@ -36,11 +36,11 @@ if [ ! -f $DIRNAME/build/oracleLibs/jars/ojdbc7.jar -o \
                 Activate the access to the Oracle Maven Repository on this page:
                    https://www.oracle.com/webapps/maven/register/license.html
                 Specify OTN_USER and OTN_PASSWD in your environment:
-                   set OTN_USER=...
-                   set OTN_PASSWD=...
+                   export OTN_USER=...
+                   export OTN_PASSWD=...
                 --------------------------------------------------------------------------------"   
                 exit 1
         fi
 fi
-sh $DIRNAME/gradlew -I init.gradle publish -s
+sh $DIRNAME/gradlew publish -s
 exit $?
