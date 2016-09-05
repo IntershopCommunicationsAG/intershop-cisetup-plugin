@@ -131,16 +131,16 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
                     /**
                      *  Version of the used Gradle based build and deployment tools.
                      *
-                     *  Defaults to 2.11.0.
+                     *  Defaults to 2.11.1.
                      */
-                    intershopGradleToolsVersion = '2.11.0'
+                    intershopGradleToolsVersion = '2.11.1'
 
                     /**
                      * Version of the deployment bootstrap plugin
                      *
-                     * Defaults to 2.11.0
+                     * Defaults to 2.11.1
                      */
-                    intershopDeploymentBootstrapVersion = '2.11.0'
+                    intershopDeploymentBootstrapVersion = '2.11.1'
 
                     /**
                      * Oracle client version.
@@ -224,7 +224,7 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/gradle/wrapper/gradle-wrapper.properties').exists()
         new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/gradle/wrapper/gradle-wrapper.properties').text.contains('http://nexus:8081/nexustest/repositories/repositories/distributions/gradle-dist/corporate_gradle_2.11/2.0.0/corporate_gradle_2.11-2.0.0-bin.zip')
         new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/settings.gradle').exists()
-        new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/settings.gradle').text.contains('com.intershop:deployment-bootstrap:2.11.0')
+        new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/settings.gradle').text.contains('com.intershop:deployment-launcher:2.11.1')
 
         new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution/src/init.d/intershop-init.gradle').exists()
         def contentIntershopInitGradle = new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution/src/init.d/intershop-init.gradle').text
@@ -270,7 +270,7 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/gradle/wrapper/gradle-wrapper.properties').exists()
         new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/gradle/wrapper/gradle-wrapper.properties').text.contains('http://nexus:8081/nexustest/repositories/repositories/distributions/gradle-dist/corporate_gradle_2.11/2.0.0/corporate_gradle_2.11-2.0.0-bin.zip')
         new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/settings.gradle').exists()
-        new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/settings.gradle').text.contains('com.intershop:deployment-bootstrap:2.11.0')
+        new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/settings.gradle').text.contains('com.intershop:deployment-launcher:2.11.1')
 
         ! new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution/src/init.d/intershop-init.gradle').exists()
 
