@@ -46,7 +46,7 @@ version = ivyPublishVersion
 def authorization = "\${System.getenv('OTN_USER')}:\${System.getenv('OTN_PASSWD')}".getBytes().encodeBase64().toString()
 def libsDestination = '\${project.buildDir}/oracleLibs/jars'
 
-String repoUser = project.hasProperty('repoUserName') ? project.getProperty('repoUserName') : System.getProperty('REPO_USER_NAME') ?: System.getenv('REPO_USER_NAME')
+String repoUserName = project.hasProperty('repoUserName') ? project.getProperty('repoUserName') : System.getProperty('REPO_USER_NAME') ?: System.getenv('REPO_USER_NAME')
 String repoUserPasswd = project.hasProperty('repoUserPasswd') ? project.getProperty('repoUserPasswd') : System.getProperty('REPO_USER_PASSWD') ?: System.getenv('REPO_USER_PASSWD')
 String releaseRepo = project.hasProperty('releaseURL') ? project.getProperty('releaseURL') : System.getProperty('RELEASEURL') ?: System.getenv('RELEASEURL')
 
