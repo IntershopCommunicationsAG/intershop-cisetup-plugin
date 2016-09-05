@@ -4,7 +4,7 @@
 buildscript {
 	gradle.injectRepositories(repositories, configurations)
 	dependencies {
-		classpath 'com.intershop:deployment-bootstrap:$IntershopCDBootstrapVersion'
+		classpath 'com.intershop:deployment-launcher:$IntershopCDBootstrapVersion'
 	}
 }
 
