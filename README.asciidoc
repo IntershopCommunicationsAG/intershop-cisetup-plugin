@@ -98,12 +98,12 @@ IntershopCISetup {
          */
         gradleBaseVersion = '2.11'
 
-        **
+        /**
         * Initial version of the corporate distribution.
         */
         distributionVersion = '2.0.0'
 
-        **
+        /**
         * If the distribution stored on an alternative path (separate web server)
         * It is necessary to specify the whole URL. Otherwise the URL will be
         * generated from the previous configuration.
