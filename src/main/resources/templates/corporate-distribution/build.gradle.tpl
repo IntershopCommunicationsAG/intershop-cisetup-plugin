@@ -1,20 +1,63 @@
-/**
- * Configuration
- **/
-// Base URL of the repository without a specific path
-final REPO_URL = '$RepoBaseURL'
-// Specific path for all repositories
-// Repository for distributions
-final REPO_DISTRIBUTION_PATH = '$RepoDistributionsID'
+plugins {
+    // publishing / upload configuration
+    id 'maven-publish'
+
+    // ide plugin
+    id 'idea'
+
+    id 'com.intershop.gradle.scmversion' version '2.3.5'
+
+    /**
+     * Intershop release configuration
+     * requires
+     *  - Gradle Artifactory plugin
+     *  - Atlassian Jira
+     *  - Buildinfo plugin
+     *  and additional environment variables.
+     * Furthermore an applied SCMVersion plugin is mandatory.
+     * See https://github.com/IntershopCommunicationsAG/gradle-release-plugins.
+     **/
+    id 'com.intershop.gradle.artifactorypublish-configuration' version '3.5.2'
+
+    /**
+     * Simple Release configuration
+     * requires only a Maven compatible repository and
+     * additional environment variables.
+     * See also https://github.com/IntershopCommunicationsAG/gradle-release-plugins.
+     **/
+     //id 'com.intershop.gradle.simplepublish-configuration' version '3.5.2'
+}
+
+scm {
+	version {
+		type = 'threeDigits'
+		increment = 'MAJOR'
+		patternDigits = 1
+
+		initialVersion = '$CustomDistributionVersion'
+	}
+}
+
+group = 'gradle-dist'
+version = scm.version.version
+
 
 /**
- * Script
+ * Only necessary for artifactory publish configuration
  **/
-apply plugin: 'base'
-apply plugin: 'ivy-publish'
-
-String repoUser = project.hasProperty('repoUserName') ? project.getProperty('repoUserName') : System.getProperty('REPO_USER_NAME') ?: System.getenv('REPO_USER_NAME')
-String repoUserPasswd = project.hasProperty('repoUserPasswd') ? project.getProperty('repoUserPasswd') : System.getProperty('REPO_USER_PASSWD') ?: System.getenv('REPO_USER_PASSWD')
+artifactory {
+    publish {
+        // for mvn publications
+        repository {
+            maven = true
+        }
+        // list of publication names
+        defaults {
+            publications('mvn')
+        }
+    }
+}
+// end of artifactory configuration
 
 task downloadGradle(type: DownloadGradle) {
 	gradleVersion '$GradleVersion'
@@ -23,47 +66,26 @@ task downloadGradle(type: DownloadGradle) {
 
 task customGradleDistribution(type: Zip, dependsOn: downloadGradle) {
 	from zipTree(downloadGradle.destinationFile)
-	archiveName "corporate_gradle_\${downloadGradle.gradleVersion}-\$version-bin.zip"
+	archiveName "$CorporateNameNormalized-\$version-bin.zip"
 	into "\${downloadGradle.distributionNameBase}/init.d", {
 		from "src/init.d"
 	}
 }
 
 publishing {
-	publications {
-		ivy(IvyPublication) {
-			artifact(customGradleDistribution) {
-				organisation 'gradle-dist'
-				module "corporate_gradle_\${downloadGradle.gradleVersion}"
-				revision "\${version}"
-				type "bin"
-				conf "runtime"
-			}
-			configurations {
-				runtime {}
-			}
-		}
-	}
-	repositories {
-		ivy {
-			name = 'Ivy Distribution Repository'
-			if(repoUser && repoUserPasswd) {
-                credentials {
-                    username repoUser
-                    password repoUserPasswd
-                }
-            } else {
-                println 'No username and password for repository specified. Please check system properties, if errors occur.'
-            }
-			url  = "\$REPO_URL/\$REPO_DISTRIBUTION_PATH/"
-			layout('pattern') {
-				ivy '[organisation]/[module]/[revision]/ivy.xml'
-				artifact '[organisation]/[module]/[revision]/[artifact]-[revision](-[type]).[ext]'
-			}
-		}
-	}
-}
+    publications {
+        mvn(MavenPublication) {
+            artifactId '$CorporateNameNormalized'
+            groupId 'gradle-dist'
 
+            artifact(customGradleDistribution)
+
+            configurations {
+                runtime {}
+            }
+        }
+    }
+}
 
 class DownloadGradle extends DefaultTask {
 	@Input String gradleVersion

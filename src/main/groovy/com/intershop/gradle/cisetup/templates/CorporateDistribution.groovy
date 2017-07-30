@@ -71,8 +71,6 @@ class CorporateDistribution extends AbstractTemplate {
 				
 				'build.gradle' 		template: '/templates/corporate-distribution/build.gradle.tpl',
 									templateProperties: props
-				'gradle.properties' template: '/templates/corporate-distribution/gradle.properties.tpl',
-									templateProperties: props
 			}
 		}
 	}
@@ -87,6 +85,7 @@ class CorporateDistribution extends AbstractTemplate {
 		props['IntershopCDToolsVersion'] = getIntershopGradleToolsVersion()
 		props['GradleVersion'] = getGradleBaseVersion()
 		props['CorporateName'] = getCorporateName()
+		props['CorporateNameNormalized'] = getCorporateName().replaceAll('\\s','').toLowerCase()
 		props['RepositoryHosts'] = "[${ getRepoHosts().collect{ "'$it'" }.join(",")}]"
 		File gradle = new File(dir, 'gradle')
 		println gradle
