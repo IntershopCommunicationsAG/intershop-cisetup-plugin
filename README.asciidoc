@@ -1,5 +1,5 @@
 = Intershop CI Setup Plugin
-:latestRevision: 1.0.0
+:latestRevision: 2.0.0
 :toc:
 
 == Summary
@@ -73,11 +73,6 @@ IntershopCISetup {
         //repoHosts = ['nexus', 'nexus.corporate.com']
 
         /**
-         * Repository path of distributions (see corporate distribution).
-         */
-        repoDistributionsPath = 'repositories/distributions'
-
-        /**
          * Repository path of all own project releases.
          */
         repoReleasesPath = 'repositories/releases'
@@ -109,7 +104,7 @@ IntershopCISetup {
         * generated from the previous configuration.
         *
         * Defaults to
-        * \${repoBaseURL}/\${repoDistributionsPath}/gradle-dist/corporate_gradle_\${gradleBaseVersion}/\${distributionVersion}/corporate_gradle_\${gradleBaseVersion}-\${distributionVersion}-bin.zip
+        * \${repoBaseURL}/distributions/gradle-dist/${corporateName without spaces}/\${distributionVersion}/${corporateName without spaces}-\${distributionVersion}.zip
         */
         //distributionURL=''
     }
@@ -197,7 +192,6 @@ e.g. http://nexus:8081/nexus/content
 |repoHosts  | List<String> |  | A list of alternative host names. Can be used when having multiple repository servers proxying each other. +
 *optional*
 
-| repoDistributionsPath | String | repositories/distributions | Repository path of distributions (see corporate distribution).
 | repoReleasesPath | String | repositories/releases | Repository path of releases.
 | repoSnapshotsPath | String | repositories/snapshots | Repository path of snapshots.
 | groupReleasePath | String | groups/components | Group path of all repositories with component releases
@@ -206,8 +200,8 @@ Must be compatible with Gradle tools version defined in versions block.
 | distributionVersion | String |2.0.0|Initial version of the corporate distribution.
 | distributionURL | String | <Generated URL> | If the distribution stored on an alternative path (separate web server) +
 It is necessary to specify the whole URL. Otherwise the URL will be generated from the previous configuration. +
-`${repoBaseURL}/${repoDistributionsPath}/gradle-dist/corporate_gradle_${gradleBaseVersion}/ +
-${distributionVersion}/corporate_gradle_${gradleBaseVersion}-${distributionVersion}-bin.zip` +
+`${repoBaseURL}/distributions/gradle-dist/${corporateName without spaces}/ +
+${distributionVersion}/${corporateName without spaces}-${distributionVersion}.zip` +
 *optional*
 |===
 
@@ -217,7 +211,6 @@ All versions that are used in this configuration.
 [cols="17%,17%,15%,51%", width="90%, options="header"]
 |===
 |Property | Type | Default value | Description
-|intershopGradleToolsVersion | String | | Version of the used Gradle based build and deployment tools.
 |intershopDeploymentBootstrapVersion | String | | Version of the deployment bootstrap plugin
 |oracleClientVersion  | String | | Oracle client version.
 |===
