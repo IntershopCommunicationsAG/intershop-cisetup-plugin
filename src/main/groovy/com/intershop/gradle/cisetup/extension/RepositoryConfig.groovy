@@ -42,8 +42,6 @@ class RepositoryConfig {
             }
         }
     }
-
-	String repoDistributionsPath = 'repositories/distributions'
 	
 	String repoReleasesPath = 'repositories/releases'
 	String repoSnapshotsPath = 'repositories/snapshots'
@@ -65,7 +63,8 @@ class RepositoryConfig {
 		if(distributionURL) {
 			return distributionURL
 		} else {
-			return "${getRepoBaseURL()}/${getRepoDistributionsPath()}/gradle-dist/corporate_gradle_${getGradleBaseVersion()}/${getDistributionVersion()}/corporate_gradle_${getGradleBaseVersion()}-${getDistributionVersion()}-bin.zip"
+            String normalizedName = getCorporateName().replaceAll('\\s','').toLowerCase()
+			return "${getRepoBaseURL()}/distributions/gradle-dist/${normalizedName}/${getDistributionVersion()}/${normalizedName}-${getDistributionVersion()}.zip"
 		}
 	}
 	

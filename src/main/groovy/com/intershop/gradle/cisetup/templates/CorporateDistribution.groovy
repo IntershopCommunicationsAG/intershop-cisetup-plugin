@@ -27,10 +27,7 @@ class CorporateDistribution extends AbstractTemplate {
 	String corporateName
 
 	@Input
-	String repositoryURL	
-	
-	@Input
-	String distributionsRepository
+	String repositoryURL
 
     @Input
 	String groupReleasesPath
@@ -46,9 +43,6 @@ class CorporateDistribution extends AbstractTemplate {
 
     @Input
     String distributionVersion = '2.0.0'
-
-	@Input
-	String intershopGradleToolsVersion
 	
 	static void createBase(String path, Properties props) {
 		ProjectTemplate.fromRoot(path) {
@@ -77,12 +71,10 @@ class CorporateDistribution extends AbstractTemplate {
 	
 	void create(Properties props, File dir) {
 		
-		props['RepoBaseURL'] = getRepositoryURL()		
-		props['RepoDistributionsID'] = getDistributionsRepository()
+		props['RepoBaseURL'] = getRepositoryURL()
 		props['RepoReleaseGroupID'] = getGroupReleasesPath()
 		props['RepoSnapshotsID'] = getRepoSnapshotsPath()
 		props['CustomDistributionVersion'] = getDistributionVersion()
-		props['IntershopCDToolsVersion'] = getIntershopGradleToolsVersion()
 		props['GradleVersion'] = getGradleBaseVersion()
 		props['CorporateName'] = getCorporateName()
 		props['CorporateNameNormalized'] = getCorporateName().replaceAll('\\s','').toLowerCase()

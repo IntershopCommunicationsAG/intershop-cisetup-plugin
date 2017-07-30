@@ -32,16 +32,6 @@ class VersionConfig {
         this.project = project
     }
 
-    String intershopGradleToolsVersion
-
-    void setIntershopGradleToolsVersion(String intershopGradleToolsVersion) {
-        if (intershopGradleToolsVersion =~ /.*[+\(\)\[\]].*/) {
-            throw new InvalidUserDataException("Version expressions like '$intershopGradleToolsVersion' are not allowed for the property 'intershopGradleToolsVersion'. Please specify a complete version number.")
-        }
-
-        this.intershopGradleToolsVersion = intershopGradleToolsVersion
-    }
-
     String intershopDeploymentBootstrapVersion
 
     void setIntershopDeploymentBootstrapVersion(String intershopDeploymentBootstrapVersion) {
