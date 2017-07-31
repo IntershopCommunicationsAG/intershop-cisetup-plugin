@@ -73,11 +73,6 @@ IntershopCISetup {
         //repoHosts = ['nexus', 'nexus.corporate.com']
 
         /**
-         * Repository path of all own project releases.
-         */
-        repoReleasesPath = 'repositories/releases'
-
-        /**
          * Repository path of snapshots.
          */
         repoSnapshotsPath = 'repositories/snapshots'

@@ -42,17 +42,9 @@ class RepositoryConfig {
             }
         }
     }
-	
-	String repoReleasesPath = 'repositories/releases'
+
 	String repoSnapshotsPath = 'repositories/snapshots'
-
 	String groupReleasePath = 'groups/components'
-
-    String[] ivyRepoPaths = []
-	String[] mavenRepoPaths = []
-
-    String[] ivySnapshotsRepoPaths = []
-    String[] mavenSnapshotsRepoPaths = []
 	
 	String distributionVersion = '2.0.0'
 	String gradleBaseVersion = '2.11'
@@ -67,43 +59,4 @@ class RepositoryConfig {
 			return "${getRepoBaseURL()}/distributions/gradle-dist/${normalizedName}/${getDistributionVersion()}/${normalizedName}-${getDistributionVersion()}.zip"
 		}
 	}
-	
-	String[] getIvyRepoPaths() {
-		def repos = [] as ArrayList<String>
-		
-		repos.addAll(ivyRepoPaths)
-		repos.add(getGroupReleasePath())
-		repos.unique { a, b -> a <=> b } // remove duplicates
-		
-		return repos.toArray()
-	}
-	
-	String[] getMavenRepoPaths() {
-		def repos = [] as ArrayList<String>
-		
-		repos.addAll(mavenRepoPaths)
-        repos.unique { a, b -> a <=> b } // remove duplicates
-		
-		return repos.toArray()
-	}
-
-    String[] getIvySnapshotsRepoPaths() {
-        def repos = [] as ArrayList<String>
-
-        repos.addAll(ivySnapshotsRepoPaths)
-        repos.add(getRepoSnapshotsPath())
-        repos.unique { a, b -> a <=> b } // remove duplicates
-
-        return repos.toArray()
-    }
-
-    String[] getMavenSnapshotsRepoPaths() {
-        def repos = [] as ArrayList<String>
-
-        repos.addAll(mavenSnapshotsRepoPaths)
-        repos.add(getRepoSnapshotsPath())
-        repos.unique { a, b -> a <=> b } // remove duplicates
-
-        return repos.toArray()
-    }
 }

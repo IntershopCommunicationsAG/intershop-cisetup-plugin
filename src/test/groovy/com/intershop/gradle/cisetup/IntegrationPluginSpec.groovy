@@ -81,11 +81,6 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
                     repoHosts = ['nexus', 'nexus.corporate.com']
 
                     /**
-                     * Repository path of releases.
-                     */
-                    repoReleasesPath = 'repositories/releases'
-
-                    /**
                      * Repository path of snapshots.
                      */
                     repoSnapshotsPath = 'repositories/snapshots'
