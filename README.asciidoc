@@ -99,7 +99,7 @@ IntershopCISetup {
         * generated from the previous configuration.
         *
         * Defaults to
-        * \${repoBaseURL}/distributions/gradle-dist/${corporateName without spaces}/\${distributionVersion}/${corporateName without spaces}-\${distributionVersion}.zip
+        * \${repoBaseURL}/distributions/gradle-dist/\${getDistributionName()}/\${distributionVersion}/${getDistributionName()}-\${distributionVersion}.zip
         */
         //distributionURL=''
     }
@@ -192,10 +192,11 @@ e.g. http://nexus:8081/nexus/content
 | gradleBaseVersion| String |2.11|Gradle version to base corporate distribution on.+
 Must be compatible with Gradle tools version defined in versions block.
 | distributionVersion | String |2.0.0|Initial version of the corporate distribution.
+| getDistributionName() | String | | Returns the name of the corporate distribution. This is the corporate name without spaces and convertet to lower cases.
 | distributionURL | String | <Generated URL> | If the distribution stored on an alternative path (separate web server) +
 It is necessary to specify the whole URL. Otherwise the URL will be generated from the previous configuration. +
-`${repoBaseURL}/distributions/gradle-dist/${corporateName without spaces}/ +
-${distributionVersion}/${corporateName without spaces}-${distributionVersion}.zip` +
+`${repoBaseURL}/distributions/gradle-dist/${getDistributionName()}/ +
+${distributionVersion}/${getDistributionName()}-${distributionVersion}.zip` +
 *optional*
 |===
 

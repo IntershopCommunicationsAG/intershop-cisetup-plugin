@@ -36,6 +36,9 @@ class CorporateDistribution extends AbstractTemplate {
 	String repoSnapshotsPath
 
 	@Input
+	String distributionName
+
+	@Input
 	String[] repoHosts
 
 	@Input
@@ -77,7 +80,7 @@ class CorporateDistribution extends AbstractTemplate {
 		props['CustomDistributionVersion'] = getDistributionVersion()
 		props['GradleVersion'] = getGradleBaseVersion()
 		props['CorporateName'] = getCorporateName()
-		props['CorporateNameNormalized'] = getCorporateName().replaceAll('\\s','').toLowerCase()
+		props['CorporateNameNormalized'] = getDistributionName()
 		props['RepositoryHosts'] = "[${ getRepoHosts().collect{ "'$it'" }.join(",")}]"
 		File gradle = new File(dir, 'gradle')
 		println gradle

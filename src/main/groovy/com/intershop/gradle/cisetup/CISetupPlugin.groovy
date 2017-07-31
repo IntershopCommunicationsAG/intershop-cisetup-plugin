@@ -84,6 +84,7 @@ class CISetupPlugin implements Plugin<Project> {
 
         // only used for task configuration
 		task.conventionMapping.distributionURL = { extension.repository.getDistributionURL() }
+		task.conventionMapping.distributionName = { extension.repository.getDistributionName()}
 
 		// corporate name
 		task.conventionMapping.corporateName = { extension.repository.getCorporateName() }

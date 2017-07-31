@@ -55,8 +55,11 @@ class RepositoryConfig {
 		if(distributionURL) {
 			return distributionURL
 		} else {
-            String normalizedName = getCorporateName().replaceAll('\\s','').toLowerCase()
-			return "${getRepoBaseURL()}/distributions/gradle-dist/${normalizedName}/${getDistributionVersion()}/${normalizedName}-${getDistributionVersion()}.zip"
+			return "${getRepoBaseURL()}/distributions/gradle-dist/${getDistributionName()}/${getDistributionVersion()}/${getDistributionName()}-${getDistributionVersion()}.zip"
 		}
 	}
+
+    String getDistributionName() {
+        return getCorporateName().replaceAll('\\s','').toLowerCase()
+    }
 }
