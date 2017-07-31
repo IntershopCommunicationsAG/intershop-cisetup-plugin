@@ -66,7 +66,8 @@ task downloadGradle(type: DownloadGradle) {
 
 task customGradleDistribution(type: Zip, dependsOn: downloadGradle) {
 	from zipTree(downloadGradle.destinationFile)
-	archiveName "$CorporateNameNormalized-\$version-bin.zip"
+	archiveName "${CorporateNameNormalized}.zip"
+	destinationDir new File(project.buildDir, 'zipfile')
 	into "\${downloadGradle.distributionNameBase}/init.d", {
 		from "src/init.d"
 	}

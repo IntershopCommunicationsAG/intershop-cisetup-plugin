@@ -111,8 +111,6 @@ class CISetupPlugin implements Plugin<Project> {
 		task.conventionMapping.oracleCartridgeVersion = { extension.versions.getOracleCartridgeVersion() }
 
         // used for build and publishing
-		task.conventionMapping.repositoryURL = { extension.repository.getRepoBaseURL() }
-		task.conventionMapping.repoReleasesPath = { extension.repository.getRepoReleasesPath() }
 		task.conventionMapping.distributionURL = { extension.repository.getDistributionURL() }
 
         return task

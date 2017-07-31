@@ -17,6 +17,7 @@ package com.intershop.gradle.cisetup
 
 import com.intershop.gradle.test.AbstractIntegrationSpec
 import org.gradle.testkit.runner.GradleRunner
+import org.gradle.testkit.runner.TaskOutcome
 
 class IntegrationPluginSpec extends AbstractIntegrationSpec {
     public static final String buildFileContent = """
@@ -380,7 +381,7 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
 
         when:
         def result = getPreparedGradleRunner()
-                .withArguments('createOracleComponentSet', '--stacktrace', '-i')
+                .withArguments('createOracleComponentSet','createCorporateDistribution', '--stacktrace', '-i')
                 .build()
 
         List taskListExecuted = []
@@ -396,8 +397,7 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         ! new File(testProjectDir, 'intershop-ci-setup/devops/ci_server').exists()
         ! new File(testProjectDir, 'intershop-ci-setup/devops/deployments').exists()
 
-        ! new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution').exists()
-        ! new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-plugins/corporate-configuration').exists()
+        new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution').exists()
 
         new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/gradle').exists()
         new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/build/oracleLibs/jars').exists()
@@ -405,6 +405,59 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
 
         publishbat.exists()
         ! publishbat.getText().contains('null')
+
+        when:
+        File distriBuildDir = new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution')
+
+        File distriFBuildFile = new File(distriBuildDir, 'build.gradle')
+        distriFBuildFile.setText(distriFBuildFile.getText().replace(
+                "id 'com.intershop.gradle.artifactorypublish-configuration'",
+                "// id 'com.intershop.gradle.artifactorypublish-configuration'").replace(
+                "//id 'com.intershop.gradle.simplepublish-configuration'",
+                "id 'com.intershop.gradle.simplepublish-configuration'").replace(
+                "artifactory {","/** artifactory {").replace(
+                "// end of artifactory configuration","**/"))
+
+        GradleRunner.create()
+                .withProjectDir(distriBuildDir)
+                .withArguments('-PstaticVersion=2.0.0', 'showVersion', '--stacktrace', '-i')
+                .withGradleVersion('2.11')
+                .withPluginClasspath(pluginClasspath)
+                .forwardOutput()
+                .build()
+
+        GradleRunner.create()
+                .withProjectDir(distriBuildDir)
+                .withArguments('-PrunOnCI=true',
+                "-PreleaseURL=${repoRoot.toURI().toURL()}/nexustest/distributions", 'publish', '--stacktrace', '-i')
+                .withGradleVersion('2.11')
+                .withPluginClasspath(pluginClasspath)
+                .forwardOutput()
+                .build()
+
+        File oracleDir = new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle')
+
+        File ojdbc = new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/build/oracleLibs/jars/ojdbc7.jar')
+        File ons = new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/build/oracleLibs/jars/ons.jar')
+        File ucp = new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/build/oracleLibs/jars/ucp.jar')
+
+        ojdbc.setText('ojdbc')
+        ons.setText('ons')
+        ucp.setText('ucp')
+
+        def publishResult = GradleRunner.create()
+                .withProjectDir(oracleDir)
+                .withArguments('publish', "-PreleaseURL=${repoRoot.toURI().toURL()}/nexustest/releases", '--stacktrace', '-i')
+                .withGradleVersion('2.11')
+                .withPluginClasspath(pluginClasspath)
+                .forwardOutput()
+                .build()
+
+        then:
+        publishResult.task(':publish').outcome == TaskOutcome.SUCCESS
+        (new File(repoRoot, 'nexustest/releases/com/oracle/jdbc/ojdbc7/12.1.0.2.0.0/ojdbc7-12.1.0.2.0.0.jar')).exists()
+        (new File(repoRoot, 'nexustest/releases/com.intershop/3rd_oracle/12.1.0.2.0.0/ojdbc7-12.1.0.2.0.0.jar')).exists()
+
     }
 
 }

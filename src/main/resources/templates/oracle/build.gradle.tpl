@@ -35,22 +35,23 @@ def oracleRepo = 'https://www.oracle.com/content/secure/maven/content'
 // JDBC version
 def oracleVersion = '${OracleClientVersion}'
 // Version for Ivy publishing
-def ivyPublishVersion = '${OracleCartridgeVersion}'
+def publishVersion = '${OracleCartridgeVersion}'
 
 /*
  * script provided by Intershop
  */
 group = 'com.intershop'
-version = ivyPublishVersion
+version = publishVersion
 
 def authorization = "\${System.getenv('OTN_USER')}:\${System.getenv('OTN_PASSWD')}".getBytes().encodeBase64().toString()
 def libsDestination = '\${project.buildDir}/oracleLibs/jars'
 
 String repoUserName = project.hasProperty('repoUserName') ? project.getProperty('repoUserName') : System.getProperty('REPO_USER_NAME') ?: System.getenv('REPO_USER_NAME')
 String repoUserPasswd = project.hasProperty('repoUserPasswd') ? project.getProperty('repoUserPasswd') : System.getProperty('REPO_USER_PASSWD') ?: System.getenv('REPO_USER_PASSWD')
-String releaseRepo = project.hasProperty('releaseURL') ? project.getProperty('releaseURL') : System.getProperty('RELEASEURL') ?: System.getenv('RELEASEURL')
 
-if (!releaseRepo) releaseRepo = '${RepoBaseURL}/${RepoReleasesID}'
+String mvnReleaseRepo = project.hasProperty('mvnReleaseURL') ? project.getProperty('mvnReleaseURL') : System.getProperty('MVNRELEASEURL') ?: System.getenv('MVNRELEASEURL')
+String ivyReleaseRepo = project.hasProperty('ivyReleaseURL') ? project.getProperty('ivyReleaseURL') : System.getProperty('IVYRELEASEURL') ?: System.getenv('IVYRELEASEURL')
+String releaseRepo = project.hasProperty('releaseURL') ? project.getProperty('releaseURL') : System.getProperty('RELEASEURL') ?: System.getenv('RELEASEURL')
 
 afterEvaluate {
     project.tasks.matching { it.name.startsWith('generate') }.all { it.dependsOn project.tasks.ojdbc7Download, project.tasks.onsDownload, project.tasks.ucpDownload }
@@ -139,11 +140,21 @@ publishing {
         }      
     }
 
-    if(releaseRepo) {
-        repositories {
+    repositories {
+        if(ivyReleaseRepo ?: releaseRepo) {
             ivy {
-                url releaseRepo
-                
+                url  (ivyReleaseRepo ?: releaseRepo)
+                if (repoUserName && repoUserPasswd) {
+                    credentials {
+                        username repoUserName
+                        password repoUserPasswd
+                    }
+                }
+            }
+        }
+        if(mvnReleaseRepo ?: releaseRepo) {
+            maven {
+                url (mvnReleaseRepo ?: releaseRepo)
                 if (repoUserName && repoUserPasswd) {
                     credentials {
                         username repoUserName
@@ -153,4 +164,5 @@ publishing {
             }
         }
     }
+
 }
