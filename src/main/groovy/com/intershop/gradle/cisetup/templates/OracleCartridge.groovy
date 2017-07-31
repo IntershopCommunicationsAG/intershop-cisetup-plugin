@@ -29,12 +29,6 @@ class OracleCartridge extends AbstractTemplate {
 	@Input
 	String oracleClientVersion
 
-	@Input
-	String repositoryURL
-
-	@Input
-	String repoReleasesPath
-
 	static void createBase(String path, Properties props) {
 		ProjectTemplate.fromRoot(path) {
 			'3rd_oracle' {
@@ -68,8 +62,6 @@ class OracleCartridge extends AbstractTemplate {
 	void create(Properties props, File dir) {
 		props['OracleCartridgeVersion'] = getOracleCartridgeVersion()
 		props['OracleClientVersion'] = getOracleClientVersion()
-		props['RepoBaseURL'] = getRepositoryURL()
-		props['RepoReleasesID'] = getRepoReleasesPath()
 
 		createBase(dir.getAbsolutePath(), props)
 	}

@@ -34,7 +34,7 @@ class CISetupExtensionSpec extends Specification {
         extension.repository.corporateName = 'xyz.acme'
         
         then:
-        extension.repository.repoReleasesPath == 'repositories/releases'
+        extension.repository.getCorporateName() == 'xyz.acme'
     }
     
     def "Project name is used as default for artifact names"() {

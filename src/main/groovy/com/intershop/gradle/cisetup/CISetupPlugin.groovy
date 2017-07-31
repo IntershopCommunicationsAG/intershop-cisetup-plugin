@@ -71,7 +71,6 @@ class CISetupPlugin implements Plugin<Project> {
 
         // repo configuration
 		task.conventionMapping.repositoryURL = { extension.repository.getRepoBaseURL() }
-		task.conventionMapping.distributionsRepository = { extension.repository.getRepoDistributionsPath() }
 		task.conventionMapping.groupReleasesPath = { extension.repository.getGroupReleasePath() }
 		task.conventionMapping.repoSnapshotsPath = { extension.repository.getRepoSnapshotsPath() }
 
@@ -83,11 +82,9 @@ class CISetupPlugin implements Plugin<Project> {
         // initial version
         task.conventionMapping.distributionVersion = { extension.repository.getDistributionVersion() }
 
-        // intershop tools version
-		task.conventionMapping.intershopGradleToolsVersion = { extension.versions.getIntershopGradleToolsVersion() }
-
         // only used for task configuration
 		task.conventionMapping.distributionURL = { extension.repository.getDistributionURL() }
+		task.conventionMapping.distributionName = { extension.repository.getDistributionName()}
 
 		// corporate name
 		task.conventionMapping.corporateName = { extension.repository.getCorporateName() }
@@ -115,8 +112,6 @@ class CISetupPlugin implements Plugin<Project> {
 		task.conventionMapping.oracleCartridgeVersion = { extension.versions.getOracleCartridgeVersion() }
 
         // used for build and publishing
-		task.conventionMapping.repositoryURL = { extension.repository.getRepoBaseURL() }
-		task.conventionMapping.repoReleasesPath = { extension.repository.getRepoReleasesPath() }
 		task.conventionMapping.distributionURL = { extension.repository.getDistributionURL() }
 
         return task
@@ -163,8 +158,6 @@ class CISetupPlugin implements Plugin<Project> {
 
         // template configuration
 		task.conventionMapping.projectName = { extension.intershopProject.getProjectName() }
-
-		task.conventionMapping.toolsVersion = { extension.versions.getIntershopGradleToolsVersion() }
 		task.conventionMapping.bootstrapVersion = { extension.versions.getIntershopDeploymentBootstrapVersion() }
 
         // used for build and publishing

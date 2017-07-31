@@ -43,18 +43,8 @@ class RepositoryConfig {
         }
     }
 
-	String repoDistributionsPath = 'repositories/distributions'
-	
-	String repoReleasesPath = 'repositories/releases'
 	String repoSnapshotsPath = 'repositories/snapshots'
-
 	String groupReleasePath = 'groups/components'
-
-    String[] ivyRepoPaths = []
-	String[] mavenRepoPaths = []
-
-    String[] ivySnapshotsRepoPaths = []
-    String[] mavenSnapshotsRepoPaths = []
 	
 	String distributionVersion = '2.0.0'
 	String gradleBaseVersion = '2.11'
@@ -65,46 +55,11 @@ class RepositoryConfig {
 		if(distributionURL) {
 			return distributionURL
 		} else {
-			return "${getRepoBaseURL()}/${getRepoDistributionsPath()}/gradle-dist/corporate_gradle_${getGradleBaseVersion()}/${getDistributionVersion()}/corporate_gradle_${getGradleBaseVersion()}-${getDistributionVersion()}-bin.zip"
+			return "${getRepoBaseURL()}/distributions/gradle-dist/${getDistributionName()}/${getDistributionVersion()}/${getDistributionName()}-${getDistributionVersion()}.zip"
 		}
 	}
-	
-	String[] getIvyRepoPaths() {
-		def repos = [] as ArrayList<String>
-		
-		repos.addAll(ivyRepoPaths)
-		repos.add(getGroupReleasePath())
-		repos.unique { a, b -> a <=> b } // remove duplicates
-		
-		return repos.toArray()
-	}
-	
-	String[] getMavenRepoPaths() {
-		def repos = [] as ArrayList<String>
-		
-		repos.addAll(mavenRepoPaths)
-        repos.unique { a, b -> a <=> b } // remove duplicates
-		
-		return repos.toArray()
-	}
 
-    String[] getIvySnapshotsRepoPaths() {
-        def repos = [] as ArrayList<String>
-
-        repos.addAll(ivySnapshotsRepoPaths)
-        repos.add(getRepoSnapshotsPath())
-        repos.unique { a, b -> a <=> b } // remove duplicates
-
-        return repos.toArray()
-    }
-
-    String[] getMavenSnapshotsRepoPaths() {
-        def repos = [] as ArrayList<String>
-
-        repos.addAll(mavenSnapshotsRepoPaths)
-        repos.add(getRepoSnapshotsPath())
-        repos.unique { a, b -> a <=> b } // remove duplicates
-
-        return repos.toArray()
+    String getDistributionName() {
+        return getCorporateName().replaceAll('\\s','').toLowerCase()
     }
 }

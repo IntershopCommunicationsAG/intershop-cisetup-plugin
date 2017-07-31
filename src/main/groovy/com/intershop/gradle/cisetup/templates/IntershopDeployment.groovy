@@ -30,10 +30,7 @@ class IntershopDeployment extends AbstractTemplate {
 	String assemblyName = 'assembly-name'
 	
 	@Input
-	String assemblyVersion = '1.0.0.0'
-	
-	@Input
-	String toolsVersion
+	String assemblyVersion = '1.0.0'
 
 	@Input
 	String bootstrapVersion
@@ -81,7 +78,6 @@ class IntershopDeployment extends AbstractTemplate {
 		props['AssemblyGroup'] = getAssemblyGroup()
 		props['AssemblyName'] = getAssemblyName()
 		props['AssemblyVersion'] = getAssemblyVersion()
-		props['IntershopCDToolsVersion'] = getToolsVersion()
 		props['IntershopCDBootstrapVersion'] = getBootstrapVersion()
 		
 		File deployments = new File(dir, 'deployments')

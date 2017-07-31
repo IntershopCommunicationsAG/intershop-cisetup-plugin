@@ -17,6 +17,7 @@ package com.intershop.gradle.cisetup
 
 import com.intershop.gradle.test.AbstractIntegrationSpec
 import org.gradle.testkit.runner.GradleRunner
+import org.gradle.testkit.runner.TaskOutcome
 
 class IntegrationPluginSpec extends AbstractIntegrationSpec {
     public static final String buildFileContent = """
@@ -80,16 +81,6 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
                     repoHosts = ['nexus', 'nexus.corporate.com']
 
                     /**
-                     * Repository path of distributions (see corporate distribution).
-                     */
-                    repoDistributionsPath = 'repositories/distributions'
-
-                    /**
-                     * Repository path of releases.
-                     */
-                    repoReleasesPath = 'repositories/releases'
-
-                    /**
                      * Repository path of snapshots.
                      */
                     repoSnapshotsPath = 'repositories/snapshots'
@@ -116,9 +107,9 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
                      * generated from the previous configuration.
                      *
                      * Defaults to
-                     * \${repoBaseURL}/\${repoDistributionsPath}/gradle-dist/corporate_gradle_\${gradleBaseVersion}/\${distributionVersion}/corporate_gradle_\${gradleBaseVersion}-\${distributionVersion}-bin.zip
-                     */
-                     //distributionURL=''
+                     * \${repoBaseURL}/distributions/gradle-dist/\${corporateName without spaces}/\${distributionVersion}/\${corporateName without spaces}-\${distributionVersion}.zip
+                     **/ 
+                    //distributionURL=''
                 }
 
                 /**
@@ -129,18 +120,10 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
                  **/
                 versions {
                     /**
-                     *  Version of the used Gradle based build and deployment tools.
-                     *
-                     *  Defaults to 2.11.1.
-                     */
-                    intershopGradleToolsVersion = '2.11.1'
-
-                    /**
                      * Version of the deployment bootstrap plugin
-                     *
-                     * Defaults to 2.11.1
+                     * Check always for updates.
                      */
-                    intershopDeploymentBootstrapVersion = '2.11.1'
+                    intershopDeploymentBootstrapVersion = '2.11.6'
 
                     /**
                      * Oracle client version.
@@ -180,10 +163,8 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         buildFile << buildFileContent
 
         when:
-        def result = GradleRunner.create()
-                .withProjectDir(testProjectDir)
+        def result = getPreparedGradleRunner()
                 .withArguments('tasks', '--stacktrace', '-i')
-                .withPluginClasspath(pluginClasspath)
                 .build()
 
         then:
@@ -205,10 +186,8 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         buildFile << buildFileContent
 
         when:
-        def result = GradleRunner.create()
-                .withProjectDir(testProjectDir)
+        def result = getPreparedGradleRunner()
                 .withArguments('intershopCISetupAll', '--stacktrace', '-i')
-                .withPluginClasspath(pluginClasspath)
                 .build()
 
         List taskListExecuted = []
@@ -222,9 +201,9 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         new File(testProjectDir, 'intershop-ci-setup/devops/ci_server/host_configs/ciserver/environment.properties').exists()
         new File(testProjectDir, 'intershop-ci-setup/devops/ci_server/host_configs/ciserver/environment.properties').text.contains('environment = development')
         new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/gradle/wrapper/gradle-wrapper.properties').exists()
-        new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/gradle/wrapper/gradle-wrapper.properties').text.contains('http://nexus:8081/nexustest/repositories/repositories/distributions/gradle-dist/corporate_gradle_2.11/2.0.0/corporate_gradle_2.11-2.0.0-bin.zip')
+        new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/gradle/wrapper/gradle-wrapper.properties').text.contains('http://nexus:8081/nexustest/repositories/distributions/gradle-dist/test-corporatename/2.0.0/test-corporatename-2.0.0.zip')
         new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/settings.gradle').exists()
-        new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/settings.gradle').text.contains('com.intershop.build.gradle:deployment-launcher:2.11.1')
+        new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/settings.gradle').text.contains('com.intershop.build.gradle:deployment-launcher:2.11.6')
 
         new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution/src/init.d/intershop-init.gradle').exists()
         def contentIntershopInitGradle = new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution/src/init.d/intershop-init.gradle').text
@@ -251,10 +230,8 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         buildFile << buildFileContent
 
         when:
-        def result = GradleRunner.create()
-                .withProjectDir(testProjectDir)
+        def result = getPreparedGradleRunner()
                 .withArguments('createDeploymentConfig', '--stacktrace', '-i')
-                .withPluginClasspath(pluginClasspath)
                 .build()
 
         List taskListExecuted = []
@@ -268,9 +245,9 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         new File(testProjectDir, 'intershop-ci-setup/devops/ci_server/host_configs/ciserver/environment.properties').exists()
         new File(testProjectDir, 'intershop-ci-setup/devops/ci_server/host_configs/ciserver/environment.properties').text.contains('environment = development')
         new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/gradle/wrapper/gradle-wrapper.properties').exists()
-        new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/gradle/wrapper/gradle-wrapper.properties').text.contains('http://nexus:8081/nexustest/repositories/repositories/distributions/gradle-dist/corporate_gradle_2.11/2.0.0/corporate_gradle_2.11-2.0.0-bin.zip')
+        new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/gradle/wrapper/gradle-wrapper.properties').text.contains('http://nexus:8081/nexustest/repositories/distributions/gradle-dist/test-corporatename/2.0.0/test-corporatename-2.0.0.zip')
         new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/settings.gradle').exists()
-        new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/settings.gradle').text.contains('com.intershop.build.gradle:deployment-launcher:2.11.1')
+        new File(testProjectDir, 'intershop-ci-setup/devops/deployments/test-project/settings.gradle').text.contains('com.intershop.build.gradle:deployment-launcher:2.11.6')
 
         ! new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution/src/init.d/intershop-init.gradle').exists()
 
@@ -291,10 +268,8 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         buildFile << buildFileContent
 
         when:
-        def result = GradleRunner.create()
-                .withProjectDir(testProjectDir)
+        def result = getPreparedGradleRunner()
                 .withArguments('createProject', '--stacktrace', '-i')
-                .withPluginClasspath(pluginClasspath)
                 .build()
 
         List taskListExecuted = []
@@ -327,17 +302,12 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
             rootProject.name= 'cisetup'
         """.stripIndent()
 
-        File repoRoot = new File(testProjectDir, 'testrepo')
-        File distributionsRoot = new File(repoRoot, 'nexustest/repositories/distributions')
-        distributionsRoot.mkdirs()
-
+        File repoRoot = new File(testProjectDir, 'testRepo')
         buildFile << buildFileContent.replace('http://nexus:8081/nexustest/repositories', "${repoRoot.toURI().toURL()}/nexustest")
 
         when:
-        def result = GradleRunner.create()
-                .withProjectDir(testProjectDir)
+        def result = getPreparedGradleRunner()
                 .withArguments('createCorporateDistribution', '--stacktrace', '-i')
-                .withPluginClasspath(pluginClasspath)
                 .build()
 
         List taskListExecuted = []
@@ -359,25 +329,32 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         ! new File(testProjectDir, 'intershop-ci-setup/projects/test-project').exists()
 
         when:
+        File distriBuildDir = new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution')
+
+        File distriFBuildFile = new File(distriBuildDir, 'build.gradle')
+        distriFBuildFile.setText(distriFBuildFile.getText().replace(
+                "id 'com.intershop.gradle.artifactorypublish-configuration'",
+                "// id 'com.intershop.gradle.artifactorypublish-configuration'").replace(
+                "//id 'com.intershop.gradle.simplepublish-configuration'",
+                "id 'com.intershop.gradle.simplepublish-configuration'").replace(
+                "artifactory {","/** artifactory {").replace(
+                "// end of artifactory configuration","**/"))
+
         def distributionsResult = GradleRunner.create()
-                .withProjectDir(new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution'))
-                .withArguments('publish', '--stacktrace', '-d')
+                .withProjectDir(distriBuildDir)
+                .withArguments('-PrunOnCI=true', "-DSNAPSHOTURL=${repoRoot.toURI().toURL()}/nexustest/snapshots",
+                "-PreleaseURL=${repoRoot.toURI().toURL()}/nexustest/releases", 'publish', '--stacktrace', '-i')
+                .withGradleVersion('2.11')
                 .withPluginClasspath(pluginClasspath)
+                .forwardOutput()
                 .build()
 
-        File repoDir = new File(distributionsRoot, 'gradle-dist')
-        File modDir = repoDir.listFiles()[0]
-        File verDir = modDir.listFiles()[0]
-
-        File zipFile = new File(verDir, "${modDir.name}-${verDir.name}-bin.zip")
-        File ivyFile = new File(verDir, "ivy.xml")
+        File distributionsRoot = new File(repoRoot,'nexustest/snapshots')
+        File repoDir = new File(distributionsRoot, 'gradle-dist/test-corporatename/2.0.0-SNAPSHOT/')
 
         then:
         distributionsResult.output.contains(':publish')
-        verDir.exists()
-        zipFile.exists()
-        ivyFile.exists()
-        ivyFile.text.contains('type="bin" ext="zip" conf="runtime"')
+        repoDir.exists()
     }
 
     def "Run oracle component task"() {
@@ -398,10 +375,8 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         buildFile << buildFileContent.replace('http://nexus:8081/nexustest/repositories', "${repoRoot.toURI().toURL()}/nexustest")
 
         when:
-        def result = GradleRunner.create()
-                .withProjectDir(testProjectDir)
-                .withArguments('createOracleComponentSet', '--stacktrace', '-i')
-                .withPluginClasspath(pluginClasspath)
+        def result = getPreparedGradleRunner()
+                .withArguments('createOracleComponentSet','createCorporateDistribution', '--stacktrace', '-i')
                 .build()
 
         List taskListExecuted = []
@@ -417,8 +392,7 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         ! new File(testProjectDir, 'intershop-ci-setup/devops/ci_server').exists()
         ! new File(testProjectDir, 'intershop-ci-setup/devops/deployments').exists()
 
-        ! new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution').exists()
-        ! new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-plugins/corporate-configuration').exists()
+        new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution').exists()
 
         new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/gradle').exists()
         new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/build/oracleLibs/jars').exists()
@@ -426,6 +400,59 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
 
         publishbat.exists()
         ! publishbat.getText().contains('null')
+
+        when:
+        File distriBuildDir = new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution')
+
+        File distriFBuildFile = new File(distriBuildDir, 'build.gradle')
+        distriFBuildFile.setText(distriFBuildFile.getText().replace(
+                "id 'com.intershop.gradle.artifactorypublish-configuration'",
+                "// id 'com.intershop.gradle.artifactorypublish-configuration'").replace(
+                "//id 'com.intershop.gradle.simplepublish-configuration'",
+                "id 'com.intershop.gradle.simplepublish-configuration'").replace(
+                "artifactory {","/** artifactory {").replace(
+                "// end of artifactory configuration","**/"))
+
+        GradleRunner.create()
+                .withProjectDir(distriBuildDir)
+                .withArguments('-PstaticVersion=2.0.0', 'showVersion', '--stacktrace', '-i')
+                .withGradleVersion('2.11')
+                .withPluginClasspath(pluginClasspath)
+                .forwardOutput()
+                .build()
+
+        GradleRunner.create()
+                .withProjectDir(distriBuildDir)
+                .withArguments('-PrunOnCI=true',
+                "-PreleaseURL=${repoRoot.toURI().toURL()}/nexustest/distributions", 'publish', '--stacktrace', '-i')
+                .withGradleVersion('2.11')
+                .withPluginClasspath(pluginClasspath)
+                .forwardOutput()
+                .build()
+
+        File oracleDir = new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle')
+
+        File ojdbc = new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/build/oracleLibs/jars/ojdbc7.jar')
+        File ons = new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/build/oracleLibs/jars/ons.jar')
+        File ucp = new File(testProjectDir, 'intershop-ci-setup/projects/oracleDriver/3rd_oracle/build/oracleLibs/jars/ucp.jar')
+
+        ojdbc.setText('ojdbc')
+        ons.setText('ons')
+        ucp.setText('ucp')
+
+        def publishResult = GradleRunner.create()
+                .withProjectDir(oracleDir)
+                .withArguments('publish', "-PreleaseURL=${repoRoot.toURI().toURL()}/nexustest/releases", '--stacktrace', '-i')
+                .withGradleVersion('2.11')
+                .withPluginClasspath(pluginClasspath)
+                .forwardOutput()
+                .build()
+
+        then:
+        publishResult.task(':publish').outcome == TaskOutcome.SUCCESS
+        (new File(repoRoot, 'nexustest/releases/com/oracle/jdbc/ojdbc7/12.1.0.2.0.0/ojdbc7-12.1.0.2.0.0.jar')).exists()
+        (new File(repoRoot, 'nexustest/releases/com.intershop/3rd_oracle/12.1.0.2.0.0/ojdbc7-12.1.0.2.0.0.jar')).exists()
+
     }
 
 }
