@@ -9,11 +9,11 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 install:
-  - ./gradlew assemble
+  - travis_wait 30 ./gradlew assemble
 before_script:
   - echo -e "gradle.publish.key=$APIKEY\ngradle.publish.secret=$APISECRET" > $HOME/.gradle/gradle.properties
 script:
-  - ./buildTravis.sh
+  - travis_wait 150 ./buildTravis.sh
 notifications:
   webhooks:
     urls:
@@ -21,6 +21,3 @@ notifications:
     on_success: change
     on_failure: always
     on_start: never
-
-
-

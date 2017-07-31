@@ -204,7 +204,7 @@ pluginBundle {
     tags = ['intershop', 'gradle', 'plugin', 'ci', 'ci-setup']
 
     plugins {
-        gradleTestPlugin {
+        gradleCIPlugin {
             id = 'com.intershop.gradle.cisetup'
             displayName = project.description
         }
