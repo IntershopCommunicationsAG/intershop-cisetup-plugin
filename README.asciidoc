@@ -187,7 +187,6 @@ e.g. http://nexus:8081/nexus/content
 |repoHosts  | List<String> |  | A list of alternative host names. Can be used when having multiple repository servers proxying each other. +
 *optional*
 
-| repoReleasesPath | String | repositories/releases | Repository path of releases.
 | repoSnapshotsPath | String | repositories/snapshots | Repository path of snapshots.
 | groupReleasePath | String | groups/components | Group path of all repositories with component releases
 | gradleBaseVersion| String |2.11|Gradle version to base corporate distribution on.+
