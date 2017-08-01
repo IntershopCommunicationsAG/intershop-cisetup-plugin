@@ -14,7 +14,7 @@ initscript {
   }
   dependencies {
     //Repository configuration - provided by Intershop
-    classpath 'com.intershop.gradle.repoconfig:repoconfig-gradle-plugin:1.1.1'
+    classpath 'com.intershop.gradle.repoconfig:repoconfig-gradle-plugin:3.3.0'
   }
 }
 
@@ -22,8 +22,15 @@ initscript {
 apply plugin: com.intershop.gradle.repoconfig.RepoConfigPlugin
 
 repositoryConfiguration {
-    releaseRepo = '$RepoBaseURL/$RepoReleaseGroupID'
-    snapshotRepo = '$RepoBaseURL/$RepoSnapshotsID'
+
+    ${singlerepo ? '' : '//'} releaseRepo = '$RepoBaseURL/$RepoReleaseGroupID'
+    ${singlerepo ? '' : '//'} snapshotRepo = '$RepoBaseURL/$RepoSnapshotsID'
+
+    ${singlerepo ? '//' : ''} ivyReleaseRepo = '$RepoBaseURL/$IvyRepoReleases'
+    ${singlerepo ? '//' : ''} mvnReleaseRepo = '$RepoBaseURL/$MvnRepoReleases'
+    ${singlerepo ? '//' : ''} ivySnapshotRepo = '$RepoBaseURL/$IvyRepoSnapshots'
+    ${singlerepo ? '//' : ''} mvnSnapshotRepo = '$RepoBaseURL/$MvnRepoSnapshots'
+
     repoHostList = $RepositoryHosts
     corporateName = '$CorporateName'
 }

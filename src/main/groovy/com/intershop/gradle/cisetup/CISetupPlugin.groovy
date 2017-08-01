@@ -71,6 +71,13 @@ class CISetupPlugin implements Plugin<Project> {
 
         // repo configuration
 		task.conventionMapping.repositoryURL = { extension.repository.getRepoBaseURL() }
+
+		task.conventionMapping.singlerepo = { extension.repository.getSingleRepos() }
+		task.conventionMapping.ivyRepoReleasesPath = { extension.repository.getIvyRepoReleasesPath() }
+		task.conventionMapping.mvnRepoReleasesPath = { extension.repository.getMvnRepoReleasesPath() }
+		task.conventionMapping.ivyRepoSnapshotsPath = { extension.repository.getIvyRepoSnapshotsPath() }
+		task.conventionMapping.mvnRepoSnapshotsPath = { extension.repository.getMvnRepoSnapshotsPath() }
+
 		task.conventionMapping.groupReleasesPath = { extension.repository.getGroupReleasePath() }
 		task.conventionMapping.repoSnapshotsPath = { extension.repository.getRepoSnapshotsPath() }
 

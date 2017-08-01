@@ -43,8 +43,15 @@ class RepositoryConfig {
         }
     }
 
+    boolean singleRepos = true
+
 	String repoSnapshotsPath = 'repositories/snapshots'
 	String groupReleasePath = 'groups/components'
+
+    String ivyRepoReleasesPath = 'ivy-releases'
+    String mvnRepoReleasesPath = 'mvn-releases'
+    String ivyRepoSnapshotsPath = 'ivy-snapshots'
+    String mvnRepoSnapshotsPath = 'mvn-snapshots'
 	
 	String distributionVersion = '2.0.0'
 	String gradleBaseVersion = '2.11'
