@@ -27,6 +27,21 @@ class CorporateDistribution extends AbstractTemplate {
 	String corporateName
 
 	@Input
+	boolean singlerepo
+
+	@Input
+	String ivyRepoReleasesPath
+
+	@Input
+	String mvnRepoReleasesPath
+
+	@Input
+	String ivyRepoSnapshotsPath
+
+	@Input
+	String mvnRepoSnapshotsPath
+
+	@Input
 	String repositoryURL
 
     @Input
@@ -73,7 +88,12 @@ class CorporateDistribution extends AbstractTemplate {
 	}
 	
 	void create(Properties props, File dir) {
-		
+
+		props['singlerepo'] = getSinglerepo()
+		props['IvyRepoReleases'] = getIvyRepoReleasesPath()
+		props['MvnRepoReleases'] = getMvnRepoReleasesPath()
+		props['IvyRepoSnapshots'] = getIvyRepoSnapshotsPath()
+		props['MvnRepoSnapshots'] = getMvnRepoSnapshotsPath()
 		props['RepoBaseURL'] = getRepositoryURL()
 		props['RepoReleaseGroupID'] = getGroupReleasesPath()
 		props['RepoSnapshotsID'] = getRepoSnapshotsPath()

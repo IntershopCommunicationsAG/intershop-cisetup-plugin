@@ -1,5 +1,5 @@
 = Intershop CI Setup Plugin
-:latestRevision: 2.0.0
+:latestRevision: 2.1.0
 :toc:
 
 == Summary
@@ -73,6 +73,13 @@ IntershopCISetup {
         //repoHosts = ['nexus', 'nexus.corporate.com']
 
         /**
+         * If you use different repositories for ivy and mvn
+         * this property must configured with false.
+         * Default: true
+         */
+        // singleRepos = false
+
+        /**
          * Repository path of snapshots.
          */
         repoSnapshotsPath = 'repositories/snapshots'
@@ -81,6 +88,34 @@ IntershopCISetup {
          * Group path of all repositories with component releases
          */
         groupReleasePath = 'groups/components'
+
+        /**
+         * Ivy repository path with releases
+         * This configuration is only necessary if singleRepos is false.
+         * Default: ivy-releases
+         */
+        // ivyRepoReleasesPath = 'ivy-releases'
+
+        /**
+         * Maven repository path with releases
+         * This configuration is only necessary if singleRepos is false.
+         * Default: ivy-releases
+         */
+        // mvnRepoReleasesPath = 'mvn-releases'
+
+        /**
+         * Ivy repository path with snapshots
+         * This configuration is only necessary if singleRepos is false.
+         * Default: ivy-releases
+         */
+        // ivyRepoSnapshotsPath = 'ivy-snapshots'
+
+        /**
+         * Maven repository path with snapshots
+         * This configuration is only necessary if singleRepos is false.
+         * Default: ivy-releases
+         */
+        // mvnRepoSnapshotsPath = 'mvn-snapshots'
 
         /**
          * Gradle version to base corporate distribution on.
@@ -186,9 +221,16 @@ This is used for group/organization of generated artifacts in the artifact repos
 e.g. http://nexus:8081/nexus/content
 |repoHosts  | List<String> |  | A list of alternative host names. Can be used when having multiple repository servers proxying each other. +
 *optional*
-
+| singleRepos | boolean | true | If you use different repositories for ivy and mvn this property must configured with false.
+4+| These path configurations are only necessary if singleRepos is true.
 | repoSnapshotsPath | String | repositories/snapshots | Repository path of snapshots.
 | groupReleasePath | String | groups/components | Group path of all repositories with component releases
+4+| These path configurations are only necessary if singleRepos is false.
+| ivyRepoReleasesPath | String | ivy-release | Ivy repository path with releases
+| mvnRepoReleasesPath | String | mvn-release | Maven repository path with releases
+| ivyRepoSnapshotsPath | String | ivy-snapshots | Ivy repository path with snapshots
+| mvnRepoSnapshotsPath | String | mvn-snapshots | Maven repository path with snapshots
+4+|{nbsp}
 | gradleBaseVersion| String |2.11|Gradle version to base corporate distribution on.+
 Must be compatible with Gradle tools version defined in versions block.
 | distributionVersion | String |2.0.0|Initial version of the corporate distribution.
