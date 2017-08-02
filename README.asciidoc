@@ -134,7 +134,7 @@ IntershopCISetup {
         * generated from the previous configuration.
         *
         * Defaults to
-        * \${repoBaseURL}/distributions/gradle-dist/\${getDistributionName()}/\${distributionVersion}/${getDistributionName()}-\${distributionVersion}.zip
+        * ${repoBaseURL}/distributions/gradle-dist/${getDistributionName()}/${distributionVersion}/${getDistributionName()}-${distributionVersion}.zip
         */
         //distributionURL=''
     }
