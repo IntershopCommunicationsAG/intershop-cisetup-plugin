@@ -497,15 +497,6 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
         when:
         File distriBuildDir = new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution')
 
-        File distriFBuildFile = new File(distriBuildDir, 'build.gradle')
-        distriFBuildFile.setText(distriFBuildFile.getText().replace(
-                "id 'com.intershop.gradle.artifactorypublish-configuration'",
-                "// id 'com.intershop.gradle.artifactorypublish-configuration'").replace(
-                "//id 'com.intershop.gradle.simplepublish-configuration'",
-                "id 'com.intershop.gradle.simplepublish-configuration'").replace(
-                "artifactory {","/** artifactory {").replace(
-                "// end of artifactory configuration","**/"))
-
         def distributionsResult = GradleRunner.create()
                 .withProjectDir(distriBuildDir)
                 .withArguments('-PrunOnCI=true', "-DSNAPSHOTURL=${repoRoot.toURI().toURL()}/nexustest/snapshots",
@@ -568,15 +559,6 @@ class IntegrationPluginSpec extends AbstractIntegrationSpec {
 
         when:
         File distriBuildDir = new File(testProjectDir, 'intershop-ci-setup/devops/gradle/corporate-distribution')
-
-        File distriFBuildFile = new File(distriBuildDir, 'build.gradle')
-        distriFBuildFile.setText(distriFBuildFile.getText().replace(
-                "id 'com.intershop.gradle.artifactorypublish-configuration'",
-                "// id 'com.intershop.gradle.artifactorypublish-configuration'").replace(
-                "//id 'com.intershop.gradle.simplepublish-configuration'",
-                "id 'com.intershop.gradle.simplepublish-configuration'").replace(
-                "artifactory {","/** artifactory {").replace(
-                "// end of artifactory configuration","**/"))
 
         def distributionsResult = GradleRunner.create()
                 .withProjectDir(distriBuildDir)
