@@ -17,7 +17,7 @@ plugins {
      * Furthermore an applied SCMVersion plugin is mandatory.
      * See https://github.com/IntershopCommunicationsAG/gradle-release-plugins.
      **/
-    id 'com.intershop.gradle.artifactorypublish-configuration' version '3.5.2'
+    // id 'com.intershop.gradle.artifactorypublish-configuration' version '3.5.2'
 
     /**
      * Simple Release configuration
@@ -25,7 +25,7 @@ plugins {
      * additional environment variables.
      * See also https://github.com/IntershopCommunicationsAG/gradle-release-plugins.
      **/
-     //id 'com.intershop.gradle.simplepublish-configuration' version '3.5.2'
+     id 'com.intershop.gradle.simplepublish-configuration' version '3.5.2'
 }
 
 scm {
@@ -45,19 +45,19 @@ version = scm.version.version
 /**
  * Only necessary for artifactory publish configuration
  **/
-artifactory {
-    publish {
-        // for mvn publications
-        repository {
-            maven = true
-        }
-        // list of publication names
-        defaults {
-            publications('mvn')
-        }
-    }
-}
-// end of artifactory configuration
+// artifactory {
+//    publish {
+//        // for mvn publications
+//        repository {
+//            maven = true
+//        }
+//        // list of publication names
+//        defaults {
+//            publications('mvn')
+//        }
+//    }
+// }
+
 
 task downloadGradle(type: DownloadGradle) {
 	gradleVersion '$GradleVersion'
