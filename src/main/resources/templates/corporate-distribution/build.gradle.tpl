@@ -91,7 +91,7 @@ publishing {
 class DownloadGradle extends DefaultTask {
 	@Input String gradleVersion
 	@Input File destinationDir
-	@Input String gradleDownloadBase = "http://services.gradle.org/distributions"
+	@Input String gradleDownloadBase = "https://services.gradle.org/distributions"
 
 	@TaskAction doDownloadGradle() {
 		destinationFile.withOutputStream { it << new URL(downloadUrl).newInputStream() }

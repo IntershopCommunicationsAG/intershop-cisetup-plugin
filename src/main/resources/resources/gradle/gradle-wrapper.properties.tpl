@@ -6,4 +6,4 @@ zipStorePath=wrapper/dists
 # Use for corporate setup
 # distributionUrl=$DistributionURL
 # Use this distribution for initial setup step
-distributionUrl=http\\://services.gradle.org/distributions/gradle-2.11-bin.zip
+distributionUrl=https\\://services.gradle.org/distributions/gradle-2.11-bin.zip
